@@ -3,6 +3,9 @@ collisions = {}
 
 -- Returns if two boxes are overlapping.
 function overlap(box_a, box_b)
+
+    if box_a.layer == box_b.layer then return false end
+
     a = {
         left = box_a.x,
         right = box_a.x + box_a.sx,
@@ -27,15 +30,21 @@ end
 
 function collides(box)
     
+    for i, box_b in pairs(collisions) do
+        if box.layer != box_b.layer then if overlap(box, box_b) then return true end end
+    end
+
+    return false
 end
 
 -- Returns the box with the given offset ONLY IF there are no collisions in that direction.
 function offset(box, by_x, by_y)
-    next = {
+    next_box = {
         x = box.x + by_x, y = box.y + by_y,
-        sx = box.sx, sy = box.sy
+        sx = box.sx, sy = box.sy,
+        layer = box.layer
     }
 
-    if collides(next) then return next end
+    if not collides(next_box) then return next_box end
     return box
 end
