@@ -1,10 +1,23 @@
 
 player = {
     x = 5, y = 4, sx = 4, sy = 4,
-    layer = 1,
+    layer = 1, gravity_increase = 0.05, gravity = 0,
+
+    control = function(this)
+
+    end,
 
     _update = function(this)
-        this.y = offset(this, 0, 1).y
+        this.on_floor = not can_offset(this, 4, this.gravity)
+
+        if not this.on_floor then 
+            this.y = offset(this, 0, this.gravity).y
+            this.gravity += this.gravity_increase
+        else
+            this.gravity = this.gravity_increase
+        end
+
+        this:control()
         --this.y += 1
     end,
 

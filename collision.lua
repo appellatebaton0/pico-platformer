@@ -37,6 +37,17 @@ function collides(box)
     return false
 end
 
+function can_offset(box, off_x, off_y)
+    
+    try_box = {
+        x = box.x + off_x, y = box.y + off_y,
+        sx = box.sx, sy = box.sy,
+        layer = box.layer
+    }
+
+    return not collides(try_box)
+end
+
 -- Returns the box with the given offset ONLY IF there are no collisions in that direction.
 function offset(box, by_x, by_y)
     next_box = {
