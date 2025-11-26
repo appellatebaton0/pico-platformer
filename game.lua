@@ -1,24 +1,36 @@
 
 player = {
     x = 5, y = 4, sx = 4, sy = 4,
-    layer = 1, gravity_increase = 0.05, gravity = 0,
+    layer = 1, gravity = 0.15,
+    vel = {x=0,y=0},
 
     control = function(this)
 
+        dir = 0
+        if btn(0) then dir = -1 end
+        if btn(1) then dir = 1 end
+
+        if btnp(3) and this.on_floor then this.vel.y -= 3 end
+
+        this.vel.x = dir
     end,
 
     _update = function(this)
-        this.on_floor = not can_offset(this, 4, this.gravity)
+        this.on_floor = this.vel.y == 0
 
-        if not this.on_floor then 
-            this.y = offset(this, 0, this.gravity).y
-            this.gravity += this.gravity_increase
-        else
-            this.gravity = this.gravity_increase
-        end
+        -- Apply gravity
+        this.vel.y += this.gravity
 
         this:control()
-        --this.y += 1
+
+        next = offset(this, this.vel.x, this.vel.y)
+        --next = offset(next, 0, this.vel.y)
+
+        this.vel.x = next.x - this.x
+        this.vel.y = next.y - this.y
+        
+        this.x = next.x this.y = next.y
+
     end,
 
     _draw = function(this)
@@ -26,6 +38,7 @@ player = {
         if collides(this) then cbox(this.x, this.y, this.sx, this.sy, 3, 4) end
     
         print(offset(this, 0, 1).y, 4, 4, 7)
+        print(this.vel.x..","..this.vel.y, 40, 4, 7)
     end
 }
 

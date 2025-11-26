@@ -50,12 +50,23 @@ end
 
 -- Returns the box with the given offset ONLY IF there are no collisions in that direction.
 function offset(box, by_x, by_y)
-    next_box = {
-        x = box.x + by_x, y = box.y + by_y,
-        sx = box.sx, sy = box.sy,
-        layer = box.layer
+    response = box
+
+    x_box = {
+        x = response.x + by_x, y = response.y,
+        sx = response.sx, sy = response.sy,
+        layer = response.layer
     }
 
-    if not collides(next_box) then return next_box end
-    return box
+    if not collides(x_box) then response = x_box end
+
+    y_box = {
+        x = response.x, y = response.y + by_y,
+        sx = response.sx, sy = response.sy,
+        layer = response.layer
+    }
+
+    if not collides(y_box) then response = y_box end
+
+    return response
 end
