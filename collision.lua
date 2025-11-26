@@ -20,7 +20,7 @@ function overlap(box_a, box_b)
         bottom = box_b.y + box_b.sy
     }
 
-    if not (a.right >= a.left) then return false end
+    if not (a.right >= b.left) then return false end
     if not (a.left <= b.right) then return false end
     if not (a.bottom >= b.top) then return false end
     if not (a.top <= b.bottom) then return false end
@@ -52,21 +52,25 @@ end
 function offset(box, by_x, by_y)
     response = box
 
-    x_box = {
-        x = response.x + by_x, y = response.y,
-        sx = response.sx, sy = response.sy,
-        layer = response.layer
-    }
+    if by_x != 0 then
+        x_box = {
+            x = response.x + by_x, y = response.y,
+            sx = response.sx, sy = response.sy,
+            layer = response.layer
+        }
 
-    if not collides(x_box) then response = x_box end
+        if not collides(x_box) then response = x_box end 
+    end
 
-    y_box = {
-        x = response.x, y = response.y + by_y,
-        sx = response.sx, sy = response.sy,
-        layer = response.layer
-    }
+    if by_y != 0 then
+        y_box = {
+            x = response.x, y = response.y + by_y,
+            sx = response.sx, sy = response.sy,
+            layer = response.layer
+        }
 
-    if not collides(y_box) then response = y_box end
+        if not collides(y_box) then response = y_box end
+    end
 
     return response
 end

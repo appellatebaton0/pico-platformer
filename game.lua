@@ -10,7 +10,7 @@ player = {
         if btn(0) then dir = -1 end
         if btn(1) then dir = 1 end
 
-        if btnp(3) and this.on_floor then this.vel.y -= 3 end
+        if btn(2) and this.on_floor then this.vel.y -= 3 end
 
         this.vel.x = dir
     end,
@@ -52,7 +52,7 @@ exbox = {
 }
 
 exbox2 = {
-    x = 1, y = 100, sx = 30, sy = 4,
+    x = 30, y = 40, sx = 30, sy = 40,
     layer = 2,
 
     _draw = function(this)
